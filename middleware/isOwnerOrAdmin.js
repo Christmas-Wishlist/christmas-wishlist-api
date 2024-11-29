@@ -31,6 +31,9 @@ const isOwnerOrAdmin = (model) => async (req, res, next) => {
         } else if (model === 'ChristmasWish') {
             // Pour les opérations sur les vœux de Noël
             resource = await ChristmasWish.findById(resourceId);
+        } else if (model === 'Self') {
+            // Pour se retrieve soit même
+            resource = user;
         }
 
         if (!resource) {
