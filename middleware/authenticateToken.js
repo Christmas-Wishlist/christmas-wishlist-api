@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Récupérer le token
+    const token = req.cookies.token
 
     if (!token) return res.status(401).json({ message: 'Token requis' }); // Pas de token
 

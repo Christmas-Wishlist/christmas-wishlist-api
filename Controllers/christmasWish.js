@@ -4,8 +4,9 @@ const ChristmasWish = require('../Models/christmasWish');
 // Créer un nouveau vœu de Noël
 exports.createWish = async (req, res) => {
     try {
-        const { message, owner, recipient } = req.body;
-        const newWish = new ChristmasWish({title, message, owner, recipient });
+        const { title, message, recipient } = req.body;
+        const owner = req.user.userId; // Utilise l'ID de l'utilisateur authentifié
+        const newWish = new ChristmasWish({ title, message, recipient, owner });
         await newWish.save();
         res.status(201).json(newWish);
     } catch (error) {
@@ -13,10 +14,12 @@ exports.createWish = async (req, res) => {
     }
 };
 
+
+
 // Obtenir tous les vœux de Noël
 exports.getAllWishes = async (req, res) => {
     try {
-        const wishes = await ChristmasWish.find().populate('owner', 'username email'); // Populate pour obtenir les détails de l'utilisateur
+        const wishes = await ChristmasWish.find().populate('owner', 'username email');
         res.status(200).json(wishes);
     } catch (error) {
         res.status(500).json({ error: error.message });
