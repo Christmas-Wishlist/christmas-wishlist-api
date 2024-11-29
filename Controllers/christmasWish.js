@@ -15,16 +15,24 @@ exports.createWish = async (req, res) => {
 };
 
 
-
 // Obtenir tous les vœux de Noël
 exports.getAllWishes = async (req, res) => {
     try {
-        const wishes = await ChristmasWish.find().populate('owner', 'username email');
+        // Vérifier si un titre est fourni dans la requête
+        const { title } = req.query;
+
+        // Construire la condition de recherche
+        const query = title ? { title: { $regex: title, $options: 'i' } } : {};
+
+        // Récupérer les vœux en fonction de la condition
+        const wishes = await ChristmasWish.find(query).populate('owner', 'username email');
+        
         res.status(200).json(wishes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Obtenir un vœu de Noël par son ID
 exports.getWishById = async (req, res) => {
