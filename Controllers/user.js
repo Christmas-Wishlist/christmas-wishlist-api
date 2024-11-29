@@ -55,8 +55,13 @@ exports.login = async (req, res) => {
 
         // Créer et envoyer un token JWT
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token,{
+            httpOnly:true,
+            sameSite:'lax',
+            maxAge:3600000,
+        })
 
-        res.status(200).json({ message: "Connexion réussie", token });
+        res.status(200).json({ message: "Connexion réussie"});
     } catch (error) {
         res.status(500).json({ message: "Erreur lors de la connexion", error: error.message });
     }

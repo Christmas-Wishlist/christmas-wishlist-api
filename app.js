@@ -2,6 +2,7 @@ const express = require('express');
 const connectDB = require('./config/db');
 const routes = require('./Routes');
 const cors = require('cors');
+const cookie_parser = require('cookie-parser')
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -15,11 +16,13 @@ const corsOptions = {
 // Appliquer le middleware CORS avec les options
 app.use(cors(corsOptions));
 
-// Middleware pour parser le JSON
-app.use(express.json());
-
+// .env
 const dotenv = require('dotenv');
 dotenv.config();
+
+// Middleware pour parser le JSON
+app.use(express.json());
+app.use(cookie_parser());
 
 // Connect to DB
 connectDB();
